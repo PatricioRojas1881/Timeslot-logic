@@ -9,7 +9,10 @@ public class Main {
 
         DataPersistanceType dpt = DataPersistanceType.FILESYSTEM;
         ScheduleController sc = new ScheduleController(dpt);
-        System.out.println(sc.createScheduleRequest());
+        String uuid = sc.createScheduleRequest();
+
+        System.out.println(sc.getScheduleByIDRequest(uuid).getName());
+        sc.getScheduleByIDRequest(uuid + "123");
 
         System.out.println("bye world!");
     }

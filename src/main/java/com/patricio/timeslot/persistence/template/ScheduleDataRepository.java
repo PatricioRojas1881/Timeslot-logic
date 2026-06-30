@@ -2,8 +2,9 @@ package com.patricio.timeslot.persistence.template;
 
 import com.patricio.timeslot.domain.Schedule;
 import com.patricio.timeslot.persistence.exception.ScheduleDataException;
+import com.patricio.timeslot.persistence.exception.ScheduleNotFoundException;
 
 public interface ScheduleDataRepository {
-    public Schedule getScheduleByID(String id) throws ScheduleDataException;
-    public String createSchedule() throws ScheduleDataException;
+    Schedule getScheduleByID(String id) throws ScheduleNotFoundException;
+    String createSchedule() throws ScheduleDataException;
 }

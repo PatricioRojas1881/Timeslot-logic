@@ -1,8 +1,16 @@
 package com.patricio.timeslot.persistence.local.filesystem.domain;
 
-public class ScheduleXmlObject {
+public class ScheduleObject {
     private String uuid;
     private String name;
+
+    public ScheduleObject() {
+    }
+
+    public ScheduleObject(String name, String uuid) {
+        this.name = name;
+        this.uuid = uuid;
+    }
 
     public String getUuid() {
         return uuid;

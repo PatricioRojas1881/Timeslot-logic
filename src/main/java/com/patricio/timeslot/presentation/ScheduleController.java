@@ -2,8 +2,7 @@ package com.patricio.timeslot.presentation;
 
 import com.patricio.timeslot.application.ScheduleService;
 import com.patricio.timeslot.domain.DataPersistanceType;
-
-import java.io.IOException;
+import com.patricio.timeslot.domain.Schedule;
 
 public class ScheduleController {
     private ScheduleService scheduleService;
@@ -14,5 +13,9 @@ public class ScheduleController {
 
     public String createScheduleRequest() {
         return scheduleService.createSchedule();
+    }
+
+    public Schedule getScheduleByIDRequest(String id) {
+        return scheduleService.getScheduleByID(id);
     }
 }

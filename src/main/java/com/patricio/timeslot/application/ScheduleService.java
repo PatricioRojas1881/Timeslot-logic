@@ -1,6 +1,7 @@
 package com.patricio.timeslot.application;
 
 import com.patricio.timeslot.domain.DataPersistanceType;
+import com.patricio.timeslot.domain.Schedule;
 import com.patricio.timeslot.persistence.local.filesystem.FileScheduleDataRepository;
 import com.patricio.timeslot.persistence.template.ScheduleDataRepository;
 
@@ -22,5 +23,9 @@ public class ScheduleService {
 
     public String createSchedule() {
         return dataRepository.createSchedule();
+    }
+
+    public Schedule getScheduleByID(String id) {
+        return dataRepository.getScheduleByID(id);
     }
 }
