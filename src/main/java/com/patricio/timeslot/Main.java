@@ -15,5 +15,6 @@ public class Main {
         sc.getScheduleByIDRequest(uuid + "123");
 
         System.out.println("bye world!");
+
     }
 }
