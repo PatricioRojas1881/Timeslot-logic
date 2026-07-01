@@ -5,7 +5,7 @@ import com.patricio.timeslot.domain.DataPersistanceType;
 import com.patricio.timeslot.domain.Schedule;
 
 public class ScheduleController {
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
     public ScheduleController(DataPersistanceType dpt) throws Exception {
         this.scheduleService = new ScheduleService(dpt);

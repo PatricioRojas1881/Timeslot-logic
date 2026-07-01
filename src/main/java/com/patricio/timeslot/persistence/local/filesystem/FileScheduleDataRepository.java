@@ -1,23 +1,18 @@
 package com.patricio.timeslot.persistence.local.filesystem;
 
+import com.patricio.timeslot.domain.Schedule;
 import com.patricio.timeslot.persistence.exception.ScheduleDataException;
 import com.patricio.timeslot.persistence.exception.ScheduleNotFoundException;
-import com.patricio.timeslot.persistence.local.filesystem.domain.ScheduleObject;
 import com.patricio.timeslot.persistence.template.ScheduleDataRepository;
-import com.patricio.timeslot.domain.Schedule;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 public class FileScheduleDataRepository implements ScheduleDataRepository {
@@ -30,7 +25,7 @@ public class FileScheduleDataRepository implements ScheduleDataRepository {
         scheduleFile = scheduleFilePath.toFile();
         mapper = new ObjectMapper();
 
-        // create schedule.xml if necessary and check for permissions
+        // create schedules.json if necessary and check for permissions
         if (scheduleFile.createNewFile()) initializeScheduleJSON();
         if (!scheduleFile.canRead()) throw new IOException("Read permission for schedules.json is required");
         if (!scheduleFile.canWrite()) throw new IOException("Write permission for schedules.json is required");
@@ -47,14 +42,8 @@ public class FileScheduleDataRepository implements ScheduleDataRepository {
         JsonNode jsonNode = mapper.readTree(scheduleFile);
 
         for (JsonNode node : jsonNode.get("schedules").asArray()) {
-            if (node.get("uuid").asString().equals(id)) {
-                ScheduleObject sobj = mapper.treeToValue(node, ScheduleObject.class);
-
-                Schedule s = new Schedule();
-                s.setName(sobj.getName());
-                s.setCourses(new LinkedList<>());
-                return s;
-            }
+            Schedule schedule = mapper.treeToValue(node, Schedule.class);
+            if (id.equals(schedule.getUuid())) return schedule;
         }
 
         throw new ScheduleNotFoundException(
@@ -64,16 +53,15 @@ public class FileScheduleDataRepository implements ScheduleDataRepository {
 
     @Override
     public String createSchedule() throws ScheduleDataException {
-        ScheduleObject sobj = new ScheduleObject("Hello World", UUID.randomUUID().toString());
+        Schedule schedule = new Schedule("Empty Schedule", UUID.randomUUID().toString());
 
         JsonNode jsonNode = mapper.readTree(scheduleFile);
         jsonNode.get("schedules")
                 .asArray()
-                .add(mapper.convertValue(sobj, JsonNode.class));
+                .add(mapper.convertValue(schedule, JsonNode.class));
 
         mapper.writeValue(scheduleFile, jsonNode);
 
-        return sobj.getUuid();
-
+        return schedule.getUuid();
     }
 }
